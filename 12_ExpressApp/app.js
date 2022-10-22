@@ -6,29 +6,42 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const adminRoutes = require('./routes/admin');
+app.set('view engine','pug');
+app.set('views','./views'); //ana dizin altındaki views klasörüne views özelliği pugını ekledik templa engine mantığı 
+
+
+
+const admin = require('./routes/admin');
 
 const userRoutes = require('./routes/user');
 //parser'ı etkinleştirdik , buffer yerine bunu kullandık
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use('/admin',adminRoutes);
+app.use('/admin',admin.routes);
 
 app.use(userRoutes);
+
+app.set('title', 'My Site'); // key,value mantığı
+console.log(app.get('title')); // çıktısı My Site, app.set' içerisinde set ettiğimiz değeri alabiliyoruz
+//yani uygulamanın herhangi bir alanında değeri set edip global olarak kullanabiliriz
+
+
 
 //dıştan dosyaları img falan ekleyebilmek için middleware
 app.use(express.static(path.join(__dirname,'public')));
 //yukarıdaki routerLErla eşlemle olmazsa bu middleware kullanır
 app.use((req,res) => {
- res.status(404).sendFile(path.join(__dirname,'views','404.html'));
+ res.status(404).render('404',{title:'Page Not Found'}); // pug dosyalarını gönderiyor render
 });
 
 
 
 
-app.listen(3001,()=>{
-    console.log('listenin on port 3001');
+app.listen(3000,()=>{
+    console.log('listenin on port 3000');
 });
+
+
 
 
 
@@ -71,3 +84,29 @@ use kullanırsak url eşleşmesi olmasa bile anasayfaya yönlendirir
 ancak get kullanınca url birebir eşleşmeli
 
 */
+
+/*
+npm install pug diyerek pug paketini dahil ettik
+ve template-engine'de kullanacağız da
+bu da diyelim bir data verdi kullanıcı ve dinamik siteye data kullanıldı bu işe yarıyor
+
+app.set methodunu uygulama ayarları yapmak için kullanıyoruz
+*/
+
+
+// her html sayfasının bir pug'ı olmalı
+
+
+/*
+şimdi biz pug'larda kalıplarımız aynı sadece bazı yerleri değiştiriyoruz
+her pug'da sayfa kodlarını tekrar yazmamak için layout'lar oluşturuyoruz
+pug'lardaki farklılıkları entegre etmek için ise block'ları kullanıyoruz
+yani layout kod tekrarını engeller
+
+
+*/
+
+
+// include'u layout'lar çok karışık olmasın kısımlara bölelim diye oluşturduk
+
+// bi methodun mixin olduğunu belirtmek için başına + ekliyoruz
