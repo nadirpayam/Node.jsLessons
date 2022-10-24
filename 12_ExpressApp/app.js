@@ -11,13 +11,13 @@ app.set('views','./views'); //ana dizin altındaki views klasörüne views özel
 
 
 
-const admin = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/shop');
 //parser'ı etkinleştirdik , buffer yerine bunu kullandık
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use('/admin',admin.routes);
+app.use('/admin',adminRoutes);
 
 app.use(userRoutes);
 
@@ -30,9 +30,9 @@ console.log(app.get('title')); // çıktısı My Site, app.set' içerisinde set 
 //dıştan dosyaları img falan ekleyebilmek için middleware
 app.use(express.static(path.join(__dirname,'public')));
 //yukarıdaki routerLErla eşlemle olmazsa bu middleware kullanır
-app.use((req,res) => {
- res.status(404).render('404',{title:'Page Not Found'}); // pug dosyalarını gönderiyor render
-});
+
+const errorController = require('./controllers/errors');
+app.use(errorController.get404Page);
 
 
 
@@ -103,6 +103,8 @@ her pug'da sayfa kodlarını tekrar yazmamak için layout'lar oluşturuyoruz
 pug'lardaki farklılıkları entegre etmek için ise block'ları kullanıyoruz
 yani layout kod tekrarını engeller
 
+pug gelen verileriv html'e çevirip direkt kullanıcılara göstermeye yarar
+
 
 */
 
@@ -110,3 +112,12 @@ yani layout kod tekrarını engeller
 // include'u layout'lar çok karışık olmasın kısımlara bölelim diye oluşturduk
 
 // bi methodun mixin olduğunu belirtmek için başına + ekliyoruz
+
+
+/*
+MVC bi design pattern'dır
+model-contorellers-view kısımlarından oluşur
+
+
+
+*/
