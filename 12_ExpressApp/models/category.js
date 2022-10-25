@@ -1,9 +1,4 @@
-const categories = [
-    {id:"1", name:"Telefon", description:"Telefon kategori ürünleri"},
-    {id:"2", name:"Bilgisayar", description:"Bilgisayar kategori ürünleri"},
-    {id:"3", name:"Beyaz Eşya", description:"Beyaz Eşya kategori ürünleri"},
-]
-
+const connection = require('../utility/database');
 
 module.exports = class Category {
     constructor(name, description) {
@@ -13,27 +8,24 @@ module.exports = class Category {
     }
 
     saveCategory() {
-        categories.push(this); // this catori sınıfından bir obje yani 
-
+        return connection.execute('INSERT INTO categories(name,description) VALUES(?,?)', [this.name, this.description]);
     }
+
 
     static getAll() { // static olarak işaretledik çünkü sınıf üzerinden çağrılıyor, obje üzerinden değil
-        return categories;
+        return connection.execute('SELECT * FROM categories');
     }
 
-    static geyById(id){
-        return categories.find(i=>i.id===id);
+    static getById(id) {
+        return connection.execute('SELECT * FROM categories WHERE id=?', [id]);
     }
 
     static update(category) {
-        //dışarıdan bir id gönderip o id ile içerdeki id'leri karşılaştırıyoruz
-        const index = categories.findIndex(i=>i.id===category.id); // id eşleşmesi yapıyor 
-        categories[index].name = categories.name;
-        categories[index].description = categories.description;
+        return connection.execute('UPDATE categories SET categories.name=?,categories.description=?', [category.name, category.description]);
     }
 
+
     static deleteById(id) {
-        const index = categories.findIndex(i=>i.id ===id);
-        categories.splice(index,1) // bu indexten itibareten 1 elemanı sil
+        return connection.execute('DELETE FROM categories WHERE id=?', [id]);
     }
 }

@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 app.set('view engine','pug');
 app.set('views','./views'); //ana dizin altındaki views klasörüne views özelliği pugını ekledik templa engine mantığı 
 
-
+const connection = require('./utility/database');
 
 const adminRoutes = require('./routes/admin');
 
@@ -33,9 +33,14 @@ app.use(express.static(path.join(__dirname,'public')));
 
 const errorController = require('./controllers/errors');
 app.use(errorController.get404Page);
-
-
-
+/*
+connection.execute('SELECT * FROM products') // sorgular execute içine yazılır
+    .then((result)=>{
+        console.log(result[0]); // kayıtları getirdi
+    }).catch((err) =>{
+        console.log(err);
+    });
+*/
 
 app.listen(3000,()=>{
     console.log('listenin on port 3000');
