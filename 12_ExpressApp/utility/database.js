@@ -1,23 +1,11 @@
-const mysql = require('mysql2');
+const Sequelize = require('sequelize');
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'node-app',
-    password: 'mysqlaaa'
+const sequelize = new Sequelize('node-app', 'root', 'mysqlaaa', {
+    dialect: 'mysql',
+    host: 'localhost'
 });
 
-module.exports = connection.promise(); // sorgular asenkron şekilde olucak
-
-
-
-
-
-
-
-
-
-
+module.exports = sequelize;
 
 
 
@@ -26,6 +14,9 @@ module.exports = connection.promise(); // sorgular asenkron şekilde olucak
 
 /*
 database bağlantısı için mysql kurduk > npm install --save mysql2
-
-
+sequilieze bir orm çeşididir 
+sequelize ile db bağlanma komutlarını kodlarla yapabiliriz
+yani sorguyu gönderip yanıt beklemek yerine sorguyu yazarken
+doğruluğu  yanlışlığını kontrol etmiş oluyoruz
+ npm install --save sequelize ile kurduk
 */

@@ -4,7 +4,8 @@
     "express": "^4.18.2",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "sequelize": "^6.25.3"
   },
   "name": "12_expressapp",
   "version": "1.0.0",
