@@ -1,13 +1,5 @@
-
 const express = require('express');
 const router = express.Router();
-
-
-//adres ekleme işlemi rout baştaki parametre adrestir
-
-
-// '../' ile bir üst klasöre çıkıyoruz
-
 
 const adminController = require('../controllers/admin');
 
@@ -23,4 +15,14 @@ router.post('/products', adminController.postEditProduct);
 
 router.post('/delete-product', adminController.postDeleteProduct);
 
-module.exports = router;
+router.get('/add-category', adminController.getAddCategory);
+
+router.post('/add-category', adminController.postAddCategory);
+
+router.get('/categories', adminController.getCategories);
+
+router.get('/categories/:categoryid', adminController.getEditCategory);
+
+router.post('/categories', adminController.postEditCategory);
+
+module.exports = router;   
